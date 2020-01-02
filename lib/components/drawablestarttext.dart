@@ -49,11 +49,8 @@ class DrawableStartTextState extends State<DrawableStartText>{
     painter.layout();
     _textHeight=painter.size.height;
 
-    //在第一帧后计算下第一行能显示多少个字母，然后将字母分成两段显示
-    WidgetsBinding.instance.addPostFrameCallback((callback){
-      _image.image.resolve(new ImageConfiguration())
-          .addListener((imageInfo,synchronousCall){
-        //计算图片的宽高
+    ImageStreamListener sl = new ImageStreamListener((imageInfo,b){
+              //计算图片的宽高
         double imgHeight = imageInfo.image.height . toDouble();
         double imgWidth = imageInfo.image.width . toDouble();
         //由于图片缩放了。所以根据缩放大小计算出宽图，这里没有用key去取值，是因为取出的值是空的
@@ -85,8 +82,12 @@ class DrawableStartTextState extends State<DrawableStartText>{
           _topText=  widget.text.substring(0,validIndex);
           _bottomText =  widget.text.substring(validIndex);
         });
-      });
+    });
 
+    //在第一帧后计算下第一行能显示多少个字母，然后将字母分成两段显示
+    WidgetsBinding.instance.addPostFrameCallback((callback){
+      _image.image.resolve(new ImageConfiguration())
+          .addListener(sl);
     });
   }
 

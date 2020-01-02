@@ -284,6 +284,7 @@ class PullAndPushState extends State<PullAndPush> with TickerProviderStateMixin{
   }
 
   Widget _getDefaultHeaderBox(){
+    print('topItemHeight高度：${topItemHeight}');
     return new Container( //下拉刷新的布局
       color: widget.defaultRefreshBoxBackgroundColor,
       height: topItemHeight,
